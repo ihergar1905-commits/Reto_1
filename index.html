@@ -1,1 +1,56 @@
- <bdo
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Permite utilizar caracteres como á, é, ñ, etc. -->
+    <meta charset="UTF-8">
+
+    <!-- Hace que la página se adapte a móviles y diferentes tamaños de pantalla -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título que aparece en la pestaña del navegador -->
+    <title>El oráculo de los números</title>
+
+    <!-- Conectamos el archivo CSS con el HTML -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Conectamos el archivo JavaScript.
+         "defer" hace que el JavaScript se ejecute cuando el HTML esté cargado -->
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Título principal de la página -->
+    <h1>El oráculo de los números</h1>
+
+    <!-- Explicación del juego -->
+    <p>Adivina el número secreto entre 1 y 100</p>
+
+    <!-- Texto que indica al usuario qué debe hacer -->
+    <label for="numero">Introduce un número:</label>
+
+    <!-- Campo donde el usuario introduce su número -->
+    <input type="number" id="numero" min="1" max="100">
+
+    <!-- Botón que utilizaremos para comprobar el número -->
+    <button id="boton">Consultar</button>
+
+    <!-- Aquí JavaScript mostrará los mensajes:
+         "El número secreto es mayor", "Es menor", "¡Correcto!", etc. -->
+    <p id="mensaje"></p>
+
+    <!-- Mostramos el número de intentos realizados -->
+    <p>
+        Intentos: <span id="intentos">0</span>
+    </p>
+
+    <!-- Aquí podremos mostrar el historial de números introducidos -->
+    <p id="historial"></p>
+
+    <!-- Botón para comenzar una nueva partida -->
+    <button id="nuevaPartida">Nueva profecía</button>
+
+</body>
+
+</html>
