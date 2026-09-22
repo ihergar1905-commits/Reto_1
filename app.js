@@ -15,51 +15,43 @@ const nuevaPartida = document.querySelector("#nuevaPartida");
 
 // Comprobar número
 boton.addEventListener("click", function () {
+  const numero = Number(input.value);
 
-    const numero = Number(input.value);
+  if (input.value === "" || numero < 1 || numero > 100) {
+    mensaje.textContent = "Introduce un número entre 1 y 100.";
+    return;
+  }
 
-    // Comprobar que el número está entre 1 y 100
-    if (input.value === "" || numero < 1 || numero > 100) {
-        mensaje.textContent = "Introduce un número entre 1 y 100.";
-        return;
-    }
+  intentos++;
+  historial.push(numero);
 
-    // Aumentar intentos y guardar el número
-    intentos++;
-    historial.push(numero);
+  contador.textContent = intentos;
+  historialHTML.textContent = `Has probado: ${historial.join(", ")}`;
 
-    contador.textContent = intentos;
-    historialHTML.textContent = `Has probado: ${historial.join(", ")}`;
+  if (numero === secreto) {
+    mensaje.textContent = `¡Correcto! Has acertado en ${intentos} intentos.`;
+    boton.disabled = true;
+  } else if (numero < secreto) {
+    mensaje.textContent = "El número secreto es mayor.";
+  } else {
+    mensaje.textContent = "El número secreto es menor.";
+  }
 
-    // Comprobar el número
-    if (numero === secreto) {
-        mensaje.textContent = `¡Correcto! Has acertado en ${intentos} intentos.`;
-        boton.disabled = true;
-    } 
-    else if (numero < secreto) {
-        mensaje.textContent = "El número secreto es mayor.";
-    } 
-    else {
-        mensaje.textContent = "El número secreto es menor.";
-    }
-
-    // Si llega a 7 intentos, termina la partida
-    if (intentos === 7 && numero !== secreto) {
-        mensaje.textContent = `Has agotado los 7 intentos. El número era ${secreto}.`;
-        boton.disabled = true;
-    }
+  if (intentos === 7 && numero !== secreto) {
+    mensaje.textContent = `Has agotado los 7 intentos. El número era ${secreto}.`;
+    boton.disabled = true;
+  }
 });
 
 // Empezar una nueva partida
 nuevaPartida.addEventListener("click", function () {
+  secreto = Math.floor(Math.random() * 100) + 1;
+  intentos = 0;
+  historial = [];
 
-    secreto = Math.floor(Math.random() * 100) + 1;
-    intentos = 0;
-    historial = [];
-
-    contador.textContent = 0;
-    historialHTML.textContent = "";
-    mensaje.textContent = "Nueva partida. ¡Adivina el número!";
-    input.value = "";
-    boton.disabled = false;
+  contador.textContent = 0;
+  historialHTML.textContent = "";
+  mensaje.textContent = "Nueva partida. ¡Adivina el número!";
+  input.value = "";
+  boton.disabled = false;
 });
