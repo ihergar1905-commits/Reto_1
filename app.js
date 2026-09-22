@@ -1,5 +1,6 @@
 // Número secreto entre 1 y 100
 let secreto = Math.floor(Math.random() * 100) + 1;
+secreto = Math.floor(Math.random() * 100) + 1;
 
 // Variables del juego
 let intentos = 0;
