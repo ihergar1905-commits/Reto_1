@@ -1,6 +1,5 @@
 // Número secreto entre 1 y 100
 let secreto = Math.floor(Math.random() * 100) + 1;
-secreto = Math.floor(Math.random() * 100) + 1;
 
 // Variables del juego
 let intentos = 0;
@@ -18,17 +17,20 @@ const nuevaPartida = document.querySelector("#nuevaPartida");
 boton.addEventListener("click", function () {
   const numero = Number(input.value);
 
+  // Validar el número
   if (input.value === "" || numero < 1 || numero > 100) {
     mensaje.textContent = "Introduce un número entre 1 y 100.";
     return;
   }
 
+  // Registrar el intento
   intentos++;
   historial.push(numero);
 
   contador.textContent = intentos;
   historialHTML.textContent = `Has probado: ${historial.join(", ")}`;
 
+  // Comparar con el número secreto
   if (numero === secreto) {
     mensaje.textContent = `¡Correcto! Has acertado en ${intentos} intentos.`;
     boton.disabled = true;
@@ -38,10 +40,14 @@ boton.addEventListener("click", function () {
     mensaje.textContent = "El número secreto es menor.";
   }
 
+  // Terminar tras siete intentos
   if (intentos === 7 && numero !== secreto) {
     mensaje.textContent = `Has agotado los 7 intentos. El número era ${secreto}.`;
     boton.disabled = true;
   }
+
+  input.value = "";
+  input.focus();
 });
 
 // Empezar una nueva partida
@@ -50,9 +56,10 @@ nuevaPartida.addEventListener("click", function () {
   intentos = 0;
   historial = [];
 
-  contador.textContent = 0;
+  contador.textContent = "0";
   historialHTML.textContent = "";
   mensaje.textContent = "Nueva partida. ¡Adivina el número!";
   input.value = "";
   boton.disabled = false;
+  input.focus();
 });
