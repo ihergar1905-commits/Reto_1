@@ -6,8 +6,8 @@ Bienvenido/a al repositorio oficial de entregas para la asignatura de Desarrollo
 
 ## 📂 Índice de Misiones
 
-* **[⚔️ Misión 1: El Despertar del DOM](https://github.com/ihergar1905-commits/Reto_1/tree/main/Mision_1)**
-  * **Descripción:** Proyecto interactivo desarrollado en HTML, CSS y JS puro (Juego de adivinanza temática "Pixel Quest").
+* **[⚔️ Misión 1: Caza al Bug](https://github.com/ihergar1905-commits/Reto_1/tree/main/Mision_1)**
+  * **Descripción:** Proyecto interactivo desarrollado en HTML, CSS y JS puro.
   * **Ubicación en el repo:** `/Mision_1`
   
 ---
