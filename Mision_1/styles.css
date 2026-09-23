@@ -1,201 +1,39 @@
-:root {
-  --bg-color: #0f172a;
-  --card-bg: rgba(30, 41, 59, 0.85);
-  --accent-green: #22c55e;
-  --accent-red: #ef4444;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
-}
-
-/* Modo Nocturno Secreto (Bonus M1) */
-body.dark-mode {
-  --bg-color: #050505;
-  --card-bg: rgba(0, 20, 0, 0.9);
-  --accent-green: #00ff66;
-  --text-main: #00ff66;
-  --text-muted: #008833;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
+/* Estilos sencillos y básicos */
 body {
-  min-height: 100vh;
-  background: var(--bg-color);
-  color: var(--text-main);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  overflow: hidden;
-}
-
-.bg-glow {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.15) 0%, rgba(0,0,0,0) 70%);
-  z-index: 0;
-}
-
-.game-container {
-  position: relative;
-  z-index: 1;
-  width: 100%;
+  font-family: Arial, sans-serif;
   max-width: 600px;
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-.game-header {
-  text-align: center;
-}
-
-.badge {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent-green);
-  background: rgba(34, 197, 94, 0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-bottom: 6px;
-}
-
-.game-header h1 {
-  font-size: 1.8rem;
-  font-weight: 800;
-}
-
-.subtitle {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-}
-
-/* Barra de Estadísticas */
-.stats-bar {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-
-.stat-card {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 20px auto;
   padding: 10px;
-  border-radius: 10px;
   text-align: center;
 }
 
-.stat-label {
-  display: block;
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.stat-value {
-  font-size: 1.4rem;
-  font-weight: 800;
-  font-family: var(--font-mono);
-  color: var(--accent-green);
-}
-
-/* Tablero de Juego */
-.code-board {
+/* Tablero donde se mueve el bug */
+#codeBoard {
+  width: 100%;
+  height: 300px;
+  border: 2px solid #333;
+  background-color: #f0f0f0;
   position: relative;
-  height: 280px;
-  background: #020617;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  margin-top: 15px;
   overflow: hidden;
 }
 
-.code-overlay {
+/* El bug dentro del tablero */
+#bug {
+  font-size: 30px;
   position: absolute;
-  inset: 0;
-  background: rgba(2, 6, 23, 0.85);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-  padding: 20px;
-  z-index: 10;
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
-.code-overlay.hidden {
+/* Clase para ocultar elementos fácilmente */
+.hidden {
   display: none;
 }
 
-.btn-primary {
-  background: var(--accent-green);
-  color: #020617;
-  border: none;
-  padding: 12px 24px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  border-radius: 8px;
+#startBtn {
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
-  transition: transform 0.1s ease;
-}
-
-.btn-primary:hover {
-  transform: scale(1.05);
-}
-
-/* El Bug Interactivos */
-.bug-target {
-  position: absolute;
-  font-size: 2.2rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  user-select: none;
-  line-height: 1;
-  padding: 8px;
-  transition: transform 0.05s ease;
-}
-
-.bug-target:active {
-  transform: scale(0.8);
-}
-
-.bug-target.hidden {
-  display: none;
-}
-
-/* Pie de Página */
-.game-footer {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.status-message {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  min-height: 20px;
-}
-
-.secret-hint {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  opacity: 0.7;
 }
