@@ -1,55 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Caza al Bug 🐛 | Misión M1</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caza al Bug - Misión 1</title>
+  <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
-  <!--<div class="bg-glow"></div> -->
 
-  <main class="game-container">
-    <header class="game-header">
-      <div class="badge">⚔️ Misión M1 · El Despertar del DOM</div>
-      <h1>🐛 Caza al Bug</h1>
-      <p class="subtitle">¡Elimina los errores de código antes de que colapse el sistema!</p>
-    </header>
+  <h1>🐛 Juego: Caza al Bug</h1>
+  <p>Haz clic en el botón de "Iniciar". Intenta hacer clic en el bug todas las veces que puedas antes de que se acabe el tiempo.</p>
 
-    <!-- Marcadores principales -->
-    <section class="stats-bar">
-      <div class="stat-card">
-        <span class="stat-label">PUNTUACIÓN</span>
-        <span class="stat-value" id="score">0</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">TIEMPO</span>
-        <span class="stat-value" id="timer">30s</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-label">MÁX. RÉRORD</span>
-        <span class="stat-value" id="highScore">0</span>
-      </div>
-    </section>
+  <!-- Marcadores simples -->
+  <div>
+    <p>Puntos: <strong id="score">0</strong></p>
+    <p>Tiempo restante: <strong id="timer">15</strong> segundos</p>
+  </div>
 
-    <!-- Arena de Juego (Panel de Código) -->
-    <section class="code-board" id="codeBoard">
-      <div class="code-overlay" id="startOverlay">
-        <h2>⚡ Terminal de Depuración</h2>
-        <p>Haz clic en los bugs 🐛 en cuanto aparezcan para depurar el código.</p>
-        <button type="button" id="startBtn" class="btn-primary">▶️ Iniciar Depuración</button>
-      </div>
+  <!-- Botón de inicio -->
+  <button type="button" id="startBtn">Iniciar Juego</button>
 
-      <!-- El Bug que se moverá por el DOM -->
-      <button type="button" id="bug" class="bug-target hidden" aria-label="Cazar Bug">🐛</button>
-    </section>
+  <!-- Area de juego -->
+  <div id="codeBoard">
+    <button type="button" id="bug" class="hidden">🐛</button>
+  </div>
 
-    <!-- Controles y Avisos -->
-    <footer class="game-footer">
-      <p class="status-message" id="statusMessage">Haz clic en iniciar para comenzar la caza.</p>
-      <small class="secret-hint">💡 Pista: Pulsa la tecla <strong>N</strong> para activar la visión nocturna Matrix.</small>
-    </footer>
-  </main>
+  <!-- Mensajes finales -->
+  <p id="statusMessage"></p>
+
 </body>
 </html>
