@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Quest 🔮 El Adivino del Reino</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="background-decorations">
+    <div class="bg-circle c1"></div>
+    <div class="bg-circle c2"></div>
+  </div>
+
+  <main class="game-card">
+    <header class="game-header">
+      <div class="badge">⚔️ Misión M1</div>
+      <h1>🔮 El Adivino del Reino</h1>
+      <p class="subtitle">Descubre el número místico oculto en los oráculos</p>
+    </header>
+
+    <!-- Selector de Dificultad -->
+    <section class="difficulty-section">
+      <label class="section-label">Dificultad:</label>
+      <div class="difficulty-buttons">
+        <button type="button" class="btn-diff active" data-max="50">🟢 Aprendiz (1-50)</button>
+        <button type="button" class="btn-diff" data-max="100">🟡 Mago (1-100)</button>
+        <button type="button" class="btn-diff" data-max="500">🔴 Archimago (1-500)</button>
+      </div>
+    </section>
+
+    <!-- Panel Principal del Oráculo -->
+    <section class="oracle-box">
+      <div class="oracle-avatar" id="oracleAvatar">🧙‍♂️</div>
+      <div class="oracle-speech" id="oracleSpeech">
+        "¡Bienvenido, aventurero! Elige tu destino e intenta adivinar mi número místico."
+      </div>
+    </section>
+
+    <!-- Formulario de Intento -->
+    <section class="input-section">
+      <div class="input-wrapper">
+        <input type="number" id="guessInput" placeholder="¿Tu predicción?" min="1" max="50" autocomplete="off" />
+        <button type="button" id="castBtn" class="btn-cast">✨ Lanzar Conjuro</button>
+      </div>
+      <p class="error-msg" id="errorMsg"></p>
+    </section>
+
+    <!-- Estadísticas y Progreso -->
+    <section class="stats-section">
+      <div class="stat-card">
+        <span class="stat-icon">🎯</span>
+        <span class="stat-label">Intentos</span>
+        <span class="stat-value" id="attemptsCount">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🌡️</span>
+        <span class="stat-label">Proximidad</span>
+        <span class="stat-value" id="proximityText">En reposo</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🏆</span>
+        <span class="stat-label">Mejor Récord</span>
+        <span class="stat-value" id="bestScoreText">-</span>
+      </div>
+    </section>
+
+    <!-- Historial de Intentos -->
+    <section class="history-section">
+      <h3>📜 Historial de Predicciones</h3>
+      <div class="history-list" id="historyList">
+        <span class="empty-history">Aún no has lanzado ningún conjuro...</span>
+      </div>
+    </section>
+
+    <!-- Acciones Secundarias -->
+    <footer class="game-footer">
+      <button type="button" id="restartBtn" class="btn-secondary">🔄 Nueva Partida</button>
+      <small class="secret-hint">💡 Pista: Pulsa la tecla <strong>N</strong> para activar la visión nocturna secretamente.</small>
+    </footer>
+  </main>
+</body>
+</html>
