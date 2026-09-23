@@ -27,6 +27,7 @@ boton.addEventListener("click", function () {
   intentos++;
   historial.push(numero);
 
+  
   contador.textContent = intentos;
   historialHTML.textContent = `Has probado: ${historial.join(", ")}`;
 
