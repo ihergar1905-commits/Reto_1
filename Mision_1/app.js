@@ -2,6 +2,7 @@
 let score = 0;
 let timeLeft = 15;
 let gameInterval = null;
+let isGolden = false; // <-- NUEVO: Controla si el bug actual es dorado
 
 // Selección de elementos del DOM
 const scoreEl = document.querySelector('#score');
@@ -18,18 +19,17 @@ function startGame() {
 
   scoreEl.textContent = score;
   timerEl.textContent = timeLeft;
-  statusMessage.textContent = '¡El juego ha comenzado!';
+  statusMessage.textContent = '¡Juego iniciado! Caza los bugs 🐛 (¡Ojo a los dorados 🌟!)';
 
-  startBtn.disabled = true; // Desactivamos el botón mientras se juega
-  bugEl.classList.remove('hidden'); // Mostramos el bug
+  startBtn.disabled = true;
+  bugEl.classList.remove('hidden');
 
   moveBug();
 
-  // Cuenta atrás cada 1 segundo
   gameInterval = setInterval(updateTimer, 1000);
 }
 
-// Función para mover el bug a una posición aleatoria
+// Función para mover el bug y decidir si es dorado
 function moveBug() {
   const maxX = codeBoard.clientWidth - 40;
   const maxY = codeBoard.clientHeight - 40;
@@ -39,13 +39,32 @@ function moveBug() {
 
   bugEl.style.left = randomX + 'px';
   bugEl.style.top = randomY + 'px';
+
+  // <-- NUEVO: Probabilidad del 20% de que salga el Bug Dorado
+  if (Math.random() < 0.2) {
+    isGolden = true;
+    bugEl.textContent = '🌟';
+    bugEl.classList.add('golden-bug');
+  } else {
+    isGolden = false;
+    bugEl.textContent = '🐛';
+    bugEl.classList.remove('golden-bug');
+  }
 }
 
 // Función al hacer clic en el bug
 function catchBug() {
-  score = score + 1;
+  // <-- NUEVO: Si es dorado suma 3 puntos, si no suma 1
+  if (isGolden) {
+    score = score + 3;
+    statusMessage.textContent = '⚡ ¡BUG DORADO CAZADO! +3 Puntos';
+  } else {
+    score = score + 1;
+    statusMessage.textContent = '🎯 ¡Bug cazado! +1 Punto';
+  }
+
   scoreEl.textContent = score;
-  moveBug(); // Se mueve inmediatamente a otro lado
+  moveBug();
 }
 
 // Función para actualizar la cuenta atrás
@@ -60,12 +79,12 @@ function updateTimer() {
 
 // Función al terminar el juego
 function endGame() {
-  clearInterval(gameInterval); // Detenemos el reloj
-  bugEl.classList.add('hidden'); // Ocultamos el bug
-  startBtn.disabled = false; // Activamos el botón otra vez
+  clearInterval(gameInterval);
+  bugEl.classList.add('hidden');
+  startBtn.disabled = false;
   statusMessage.textContent = '¡Fin del juego! Conseguiste ' + score + ' puntos.';
 }
 
-// Escuchadores de eventos (sin inline en HTML)
+// Escuchadores de eventos
 startBtn.addEventListener('click', startGame);
 bugEl.addEventListener('click', catchBug);
