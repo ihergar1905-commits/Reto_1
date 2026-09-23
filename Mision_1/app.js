@@ -2,7 +2,7 @@
 let score = 0;
 let timeLeft = 15;
 let gameInterval = null;
-let isGolden = false; // <-- NUEVO: Controla si el bug actual es dorado
+let isTrap = false; // Controla si el icono actual es una trampa
 
 // Selección de elementos del DOM
 const scoreEl = document.querySelector('#score');
@@ -19,17 +19,18 @@ function startGame() {
 
   scoreEl.textContent = score;
   timerEl.textContent = timeLeft;
-  statusMessage.textContent = '¡Juego iniciado! Caza los bugs 🐛 (¡Ojo a los dorados 🌟!)';
+  statusMessage.textContent = '¡Caza los bugs 🐛! ¡Cuidado con las arañas trampa 🕷️!';
 
-  startBtn.disabled = true;
-  bugEl.classList.remove('hidden');
+  startBtn.disabled = true; // Desactivamos el botón de inicio
+  bugEl.classList.remove('hidden'); // Mostramos el bug
 
   moveBug();
 
+  // Cuenta atrás cada 1 segundo
   gameInterval = setInterval(updateTimer, 1000);
 }
 
-// Función para mover el bug y decidir si es dorado
+// Función para mover el bug y decidir si es trampa
 function moveBug() {
   const maxX = codeBoard.clientWidth - 40;
   const maxY = codeBoard.clientHeight - 40;
@@ -40,31 +41,30 @@ function moveBug() {
   bugEl.style.left = randomX + 'px';
   bugEl.style.top = randomY + 'px';
 
-  // <-- NUEVO: Probabilidad del 20% de que salga el Bug Dorado
+  // Probabilidad del 20% de que sea una trampa
   if (Math.random() < 0.2) {
-    isGolden = true;
-    bugEl.textContent = '🌟';
-    bugEl.classList.add('golden-bug');
+    isTrap = true;
+    bugEl.textContent = '🕷️';
+    bugEl.classList.add('bug-trap');
   } else {
-    isGolden = false;
+    isTrap = false;
     bugEl.textContent = '🐛';
-    bugEl.classList.remove('golden-bug');
+    bugEl.classList.remove('bug-trap');
   }
 }
 
-// Función al hacer clic en el bug
+// Función al hacer clic en el elemento
 function catchBug() {
-  // <-- NUEVO: Si es dorado suma 3 puntos, si no suma 1
-  if (isGolden) {
-    score = score + 3;
-    statusMessage.textContent = '⚡ ¡BUG DORADO CAZADO! +3 Puntos';
+  if (isTrap) {
+    score = score - 2; // Resta puntos si es trampa
+    statusMessage.textContent = '⚠️ ¡PULSASTE UNA TRAMPA! -2 Puntos';
   } else {
-    score = score + 1;
+    score = score + 1; // Suma puntos si es el bug normal
     statusMessage.textContent = '🎯 ¡Bug cazado! +1 Punto';
   }
 
   scoreEl.textContent = score;
-  moveBug();
+  moveBug(); // Se reubica en otra posición
 }
 
 // Función para actualizar la cuenta atrás
@@ -79,12 +79,12 @@ function updateTimer() {
 
 // Función al terminar el juego
 function endGame() {
-  clearInterval(gameInterval);
-  bugEl.classList.add('hidden');
-  startBtn.disabled = false;
-  statusMessage.textContent = '¡Fin del juego! Conseguiste ' + score + ' puntos.';
+  clearInterval(gameInterval); // Detenemos el reloj
+  bugEl.classList.add('hidden'); // Ocultamos el bug
+  startBtn.disabled = false; // Activamos el botón de inicio
+  statusMessage.textContent = '¡Fin del juego! Puntuación final: ' + score + ' puntos.';
 }
 
-// Escuchadores de eventos
+// Escuchadores de eventos (sin inline en HTML)
 startBtn.addEventListener('click', startGame);
 bugEl.addEventListener('click', catchBug);
