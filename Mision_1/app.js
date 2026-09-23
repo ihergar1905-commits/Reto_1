@@ -1,170 +1,106 @@
 // --- ESTADO DEL JUEGO ---
-let secret = 0;
-let maxRange = 50;
-let attempts = 0;
-let history = [];
-let isGameOver = false;
-let bestScore = null;
+let score = 0;
+let timeLeft = 30;
+let gameInterval = null;
+let bugTimeout = null;
+let highScore = 0;
+let isPlaying = false;
 
 // --- ELEMENTOS DEL DOM ---
-const guessInput = document.querySelector('#guessInput');
-const castBtn = document.querySelector('#castBtn');
-const restartBtn = document.querySelector('#restartBtn');
-const errorMsg = document.querySelector('#errorMsg');
-const oracleSpeech = document.querySelector('#oracleSpeech');
-const oracleAvatar = document.querySelector('#oracleAvatar');
-const attemptsCount = document.querySelector('#attemptsCount');
-const proximityText = document.querySelector('#proximityText');
-const bestScoreText = document.querySelector('#bestScoreText');
-const historyList = document.querySelector('#historyList');
-const diffButtons = document.querySelectorAll('.btn-diff');
+const scoreEl = document.querySelector('#score');
+const timerEl = document.querySelector('#timer');
+const highScoreEl = document.querySelector('#highScore');
+const bugEl = document.querySelector('#bug');
+const startBtn = document.querySelector('#startBtn');
+const startOverlay = document.querySelector('#startOverlay');
+const codeBoard = document.querySelector('#codeBoard');
+const statusMessage = document.querySelector('#statusMessage');
 
-// --- INICIALIZACIÓN ---
-function initGame() {
-  secret = Math.floor(Math.random() * maxRange) + 1;
-  attempts = 0;
-  history = [];
-  isGameOver = false;
+// --- INICIAR JUEGO ---
+function startGame() {
+  score = 0;
+  timeLeft = 30;
+  isPlaying = true;
 
-  // Reset de la UI
-  attemptsCount.textContent = '0';
-  proximityText.textContent = 'En reposo';
-  errorMsg.textContent = '';
-  oracleSpeech.textContent = `"He guardado un nuevo secreto entre 1 y ${maxRange}. ¡Adivínalo si puedes!"`;
-  oracleAvatar.textContent = '🧙‍♂️';
-  
-  guessInput.value = '';
-  guessInput.max = maxRange;
-  guessInput.disabled = false;
-  castBtn.disabled = false;
+  scoreEl.textContent = '0';
+  timerEl.textContent = `${timeLeft}s`;
+  statusMessage.textContent = '¡Caza todos los bugs que puedas!';
 
-  renderHistory();
+  startOverlay.classList.add('hidden');
+  bugEl.classList.remove('hidden');
+
+  // Mover el primer bug y arrancar temporizador
+  moveBug();
+  gameInterval = setInterval(updateTimer, 1000);
 }
 
-// --- LÓGICA DE PROXIMIDAD (CALIENTE / FRÍO) ---
-function calculateProximity(guess) {
-  const diff = Math.abs(guess - secret);
-  const percentage = diff / maxRange;
+// --- MOVER BUG A POSICIÓN ALEATORIA ---
+function moveBug() {
+  if (!isPlaying) return;
 
-  if (percentage <= 0.05) return { text: '🔥 Hirviendo', color: '#ef4444' };
-  if (percentage <= 0.15) return { text: '☀️ Caliente', color: '#f59e0b' };
-  if (percentage <= 0.30) return { text: '🌤️ Tibio', color: '#eab308' };
-  return { text: '❄️ Congelado', color: '#3b82f6' };
+  // Obtener dimensiones del tablero
+  const boardWidth = codeBoard.clientWidth - 50;
+  const boardHeight = codeBoard.clientHeight - 50;
+
+  // Coordenadas aleatorias dentro del área
+  const randomX = Math.max(10, Math.floor(Math.random() * boardWidth));
+  const randomY = Math.max(10, Math.floor(Math.random() * boardHeight));
+
+  bugEl.style.left = `${randomX}px`;
+  bugEl.style.top = `${randomY}px`;
+
+  // Cambiar posición automáticamente tras un tiempo si no se le hace clic
+  clearTimeout(bugTimeout);
+  bugTimeout = setTimeout(moveBug, 1200); 
 }
 
-// --- MANEJO DE INTENTOS ---
-function handleGuess() {
-  if (isGameOver) return;
+// --- EVENTO DE CAZAR BUG ---
+function catchBug() {
+  if (!isPlaying) return;
 
-  const rawValue = guessInput.value;
-  const numValue = Number(rawValue);
+  score += 10;
+  scoreEl.textContent = String(score);
+  statusMessage.textContent = '⚡ ¡Bug cazado (+10 pts)!';
 
-  // Validación
-  if (rawValue.trim() === '' || isNaN(numValue)) {
-    errorMsg.textContent = '⚠️ Escribe un número válido antes de lanzar el conjuro.';
-    return;
+  // Reposicionar inmediatamente tras cazarlo
+  moveBug();
+}
+
+// --- ACTUALIZAR TEMPORIZADOR ---
+function updateTimer() {
+  timeLeft--;
+  timerEl.textContent = `${timeLeft}s`;
+
+  if (timeLeft <= 0) {
+    endGame();
   }
+}
 
-  if (numValue < 1 || numValue > maxRange) {
-    errorMsg.textContent = `⚠️ El número debe estar entre 1 y ${maxRange}.`;
-    return;
-  }
+// --- FIN DEL JUEGO ---
+function endGame() {
+  isPlaying = false;
+  clearInterval(gameInterval);
+  clearTimeout(bugTimeout);
 
-  // Si pasa la validación, limpiamos el error
-  errorMsg.textContent = '';
-  attempts++;
-  attemptsCount.textContent = String(attempts);
+  bugEl.classList.add('hidden');
+  startOverlay.classList.remove('hidden');
 
-  // Comparación
-  if (numValue === secret) {
-    handleWin();
+  if (score > highScore) {
+    highScore = score;
+    highScoreEl.textContent = String(highScore);
+    statusMessage.textContent = `🎉 ¡NUEVO RÉCORD! Has conseguido ${score} puntos.`;
   } else {
-    const proximity = calculateProximity(numValue);
-    proximityText.textContent = proximity.text;
-
-    if (numValue < secret) {
-      oracleSpeech.textContent = `🔮 "El número místico es MAYOR que ${numValue}."`;
-      oracleAvatar.textContent = '🔮';
-      history.push({ val: numValue, type: 'low', label: `${numValue} ⬆️` });
-    } else {
-      oracleSpeech.textContent = `🔮 "El número místico es MENOR que ${numValue}."`;
-      oracleAvatar.textContent = '🔮';
-      history.push({ val: numValue, type: 'high', label: `${numValue} ⬇️` });
-    }
-    renderHistory();
+    statusMessage.textContent = `Fin de la partida. Puntuación: ${score} pts.`;
   }
-
-  guessInput.value = '';
-  guessInput.focus();
-}
-
-// --- MANEJO DE VICTORIA ---
-function handleWin() {
-  isGameOver = true;
-  guessInput.disabled = true;
-  castBtn.disabled = true;
-
-  oracleAvatar.textContent = '👑';
-  oracleSpeech.textContent = `🎉 ¡INCREÍBLE! Has descubierto el número ${secret} en ${attempts} intentos.`;
-  proximityText.textContent = '🎯 ¡Acertado!';
-
-  history.push({ val: secret, type: 'win', label: `${secret} 🏆` });
-  renderHistory();
-
-  // Guardar récord
-  if (bestScore === null || attempts < bestScore) {
-    bestScore = attempts;
-    bestScoreText.textContent = `${bestScore} int.`;
-  }
-}
-
-// --- RENDERIZADO DEL HISTORIAL ---
-function renderHistory() {
-  if (history.length === 0) {
-    historyList.innerHTML = '<span class="empty-history">Aún no has lanzado ningún conjuro...</span>';
-    return;
-  }
-
-  // Usamos textContent a través de fragmentos o chips dinámicos seguros
-  historyList.innerHTML = '';
-  history.forEach((item) => {
-    const chip = document.createElement('span');
-    chip.className = `chip ${item.type}`;
-    chip.textContent = item.label;
-    historyList.appendChild(chip);
-  });
 }
 
 // --- EVENT LISTENERS (Sin inline handlers) ---
-castBtn.addEventListener('click', handleGuess);
+startBtn.addEventListener('click', startGame);
+bugEl.addEventListener('click', catchBug);
 
-// Permitir lanzar conjuro pulsando Enter
-guessInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    handleGuess();
-  }
-});
-
-restartBtn.addEventListener('click', initGame);
-
-// Cambio de Dificultad
-diffButtons.forEach((btn) => {
-  btn.addEventListener('click', (e) => {
-    diffButtons.forEach((b) => b.classList.remove('active'));
-    e.target.classList.add('active');
-    maxRange = Number(e.target.dataset.max);
-    initGame();
-  });
-});
-
-// --- BONUS DE LA MISIÓN: MODO NOCTURNO CON TECLA SECRET "N" ---
+// --- BONUS M1: TECLA SECRETA "N" PARA MODO NOCTURNO MATRIX ---
 document.addEventListener('keydown', (e) => {
   if (e.key === 'n' || e.key === 'N') {
-    // Evita activar si se está escribiendo dentro del input
-    if (document.activeElement === guessInput) return;
     document.body.classList.toggle('dark-mode');
   }
 });
-
-// Arranque inicial
-initGame();
