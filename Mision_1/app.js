@@ -15,6 +15,8 @@ const statusMessage = document.querySelector('#statusMessage');
 
 // Función para iniciar el juego
 function startGame() {
+  score = 0;
+  timeLeft = 15;
 
   scoreEl.textContent = score;
   timerEl.textContent = timeLeft;
