@@ -33,6 +33,7 @@ function startGame() {
 
 // Función para mover el bug y decidir qué tipo de insecto aparece
 function moveBug() {
+  
   // Cancelamos el temporizador de movimiento anterior
   clearTimeout(bugTimeout);
 
