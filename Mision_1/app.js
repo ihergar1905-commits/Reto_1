@@ -1,8 +1,8 @@
 // Variables de estado
-let score = 0;
-let timeLeft = 15;
-let gameInterval = null;
-let bugTimeout = null;
+let score = 0; // variable para la puntuación
+let timeLeft = 15; //Define la duración inicial 
+let gameInterval = null; // identificador del temporizador del reloj principal
+let bugTimeout = null; //el temporizador del salto automático del bug
 let bugType = 'normal'; // Guarda el tipo actual: 'normal', 'trap' o 'golden'
 
 // Selección de elementos del DOM
@@ -15,8 +15,6 @@ const statusMessage = document.querySelector('#statusMessage');
 
 // Función para iniciar el juego
 function startGame() {
-  score = 0;
-  timeLeft = 15;
 
   scoreEl.textContent = score;
   timerEl.textContent = timeLeft;
