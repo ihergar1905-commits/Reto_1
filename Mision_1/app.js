@@ -46,7 +46,7 @@ function moveBug() {
   bugEl.style.left = randomX + 'px';
   bugEl.style.top = randomY + 'px';
 
-  // Reseteamos las clases especiales
+  // Reseteamos las clases especiales para que no se acumulen los efectos de los bugs especiales
   bugEl.classList.remove('bug-trap', 'golden-bug');
 
   // Probabilidades y tiempo de permanencia según el tipo
@@ -58,7 +58,7 @@ function moveBug() {
     bugType = 'golden';
     bugEl.textContent = '🌟';
     bugEl.classList.add('golden-bug');
-    duration = 500; // ¡Solo dura 0.5 segundos!
+    duration = 700; // ¡Solo dura 0.5 segundos!
 
   } else if (chance < 0.30) {
     // 20% de probabilidad: Araña Trampa
@@ -82,7 +82,7 @@ function moveBug() {
 function catchBug() {
   if (bugType === 'golden') {
     score = score + 3;
-    statusMessage.textContent = '⚡ ¡RELEJO INCREÍBLE! Bug Dorado +3 Puntos';
+    statusMessage.textContent = '⚡ ¡REFLEJO INCREÍBLE! Bug Dorado +3 Puntos';
   } else if (bugType === 'trap') {
     score = score - 2;
     statusMessage.textContent = '⚠️ ¡CAÍSTE EN LA TRAMPA! -2 Puntos';
@@ -108,7 +108,7 @@ function updateTimer() {
 // Función al terminar el juego
 function endGame() {
   clearInterval(gameInterval); // Detiene el reloj global
-  clearTimeout(bugTimeout);    // Detiene el salto automático
+  clearTimeout(bugTimeout); // Detiene el salto automático
   
   bugEl.classList.add('hidden');
   startBtn.disabled = false;
@@ -116,5 +116,5 @@ function endGame() {
 }
 
 // Escuchadores de eventos
-startBtn.addEventListener('click', startGame);
-bugEl.addEventListener('click', catchBug);
+startBtn.addEventListener('click', startGame); //Asocia el evento click del botón de inicio con la función startGame
+bugEl.addEventListener('click', catchBug);   //Asocia el evento click del botón del bug con la función catchBug. Esto evita tener que escribir atributos onclick en el HTML
