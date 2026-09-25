@@ -33,8 +33,8 @@ Conforme a las directrices de la asignatura, se ha utilizado **Gemini CLI** inte
 A continuación se detallan las decisiones técnicas aplicadas en la implementación:
 
 1. **Gestión de temporizadores asíncronos (`setInterval` y `setTimeout`):**
-   * *Decisión:* Se utiliza un `setInterval` global de 1 segundo para el reloj de la partida y un `setTimeout` dinámico (`bugTimeout`) para el movimiento automático de los bugs.
-   * *Justificación:* Al incluir objetivos trampa que el usuario prefiere no pulsar, el `setTimeout` garantiza que el tablero continúe en movimiento sin quedarse congelado. Ambas funciones asíncronas se limpian explícitamente en `endGame()` con `clearInterval` y `clearTimeout` para prevenir fugas de memoria.
+   * *Decisión:* Se utiliza un `setInterval` global de 1 segundo (`gameInterval`) para la cuenta atrás de la partida y un `setTimeout` dinámico (`bugTimeout`) para el movimiento automático del bug.
+   * *Justificación:* Al incluir objetivos trampa que el usuario prefiere no pulsar, el `setTimeout` garantiza que el tablero continúe en movimiento. `clearTimeout(bugTimeout)` se ejecuta tanto al inicio de cada salto en `moveBug()` (para evitar solapamientos si el usuario hace clics rápidos) como en `endGame()`, garantizando la prevención de fugas de memoria y acumulaciones asíncronas.
 
 2. **Lógica condicional de probabilidad y velocidad variable:**
    * *Decisión:* En la función `moveBug()`, un valor aleatorio generado con `Math.random()` determina la categoría del objetivo:
@@ -43,6 +43,10 @@ A continuación se detallan las decisiones técnicas aplicadas en la implementac
      * Resto: Bug Normal (`🐛`, 1000 ms de duración).
    * *Justificación:* Permite implementar una mecánica de riesgo/recompensa y dificultad adaptativa de forma muy eficiente, modificando únicamente la variable `duration` consumida por el temporizador.
 
-3. **Separación de responsabilidades y accesibilidad:**
-   * *Decisión:* El archivo HTML no incluye funciones inline (`onclick`). Toda la interactividad se vincula desde `app.js` mediante `addEventListener`.
+3. **Manipulación eficiente y segura del DOM:**
+   * *Decisión:* Se utiliza `textContent` en lugar de `innerHTML` para actualizar puntuaciones, tiempo y emojis. Se emplea `classList.add()` y `classList.remove()` para gestionar los estados visuales (`hidden`, `bug-trap`, `golden-bug`).
+   * *Justificación:* Es una práctica más segura (previene vulnerabilidades XSS) y con mejor rendimiento al no forzar al navegador a re-parsear cadenas HTML innecesariamente.
+
+4. **Separación de responsabilidades y accesibilidad:**
+   * *Decisión:* El archivo HTML no incluye funciones inline (`onclick`). Toda la interactividad se vincula desde `app.js` mediante `addEventListener` pasando la referencia callback sin paréntesis (ej. `startBtn.addEventListener('click', startGame)`).
    * *Justificación:* Mantiene un código limpio, legible y fácil de mantener, respetando la separación entre la capa de presentación y la capa de lógica.
