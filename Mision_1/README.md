@@ -1,5 +1,5 @@
 # 🐛 Caza al Bug
-Misión M1 · El Despertar del DOM (Web Development I - U-tad).
+Misión M1 · El Despertar del DOM.
 
 ## 🎮 Descripción del proyecto
 "Caza al Bug" es una aplicación web interactiva desarrollada con HTML5, CSS3 y JavaScript puro (vanilla JS). El usuario debe eliminar los bugs (🐛) que aparecen en el tablero dentro de un límite de tiempo de 15 segundos. 
