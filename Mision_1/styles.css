@@ -46,6 +46,7 @@ body.dark-mode .theme-hint {
   margin-top: 15px;
   overflow: hidden;
   transition: background-color 0.3s;
+  user-select: none; /* Evita que el texto o área se seleccione al hacer clics rápidos */
 }
 
 /* El elemento interactivo del bug (emoji dentro de un botón sin marco) */
@@ -55,6 +56,7 @@ body.dark-mode .theme-hint {
   cursor: pointer;
   background: none;
   border: none;
+  user-select: none; /* Evita seleccionar el emoji como texto */
 }
 
 /* Botón de inicio del juego */
