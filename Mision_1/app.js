@@ -1,8 +1,8 @@
 // Variables de estado
 let score = 0; // variable para la puntuación
-let timeLeft = 15; //Define la duración inicial 
+let timeLeft = 15; // Define la duración inicial 
 let gameInterval = null; // identificador del temporizador del reloj principal
-let bugTimeout = null; //el temporizador del salto automático del bug
+let bugTimeout = null; // el temporizador del salto automático del bug
 let bugType = 'normal'; // Guarda el tipo actual: 'normal', 'trap' o 'golden'
 
 // Selección de elementos del DOM
@@ -12,6 +12,7 @@ const bugEl = document.querySelector('#bug');
 const startBtn = document.querySelector('#startBtn');
 const codeBoard = document.querySelector('#codeBoard');
 const statusMessage = document.querySelector('#statusMessage');
+const themeNotice = document.querySelector('#themeNotice');
 
 // Función para iniciar el juego
 function startGame() {
@@ -46,7 +47,7 @@ function moveBug() {
   bugEl.style.left = randomX + 'px';
   bugEl.style.top = randomY + 'px';
 
-  // Reseteamos las clases especiales para que no se acumulen los efectos de los bugs especiales
+  // Reseteamos las clases especiales para que no se acumulen los efectos
   bugEl.classList.remove('bug-trap', 'golden-bug');
 
   // Probabilidades y tiempo de permanencia según el tipo
@@ -58,7 +59,7 @@ function moveBug() {
     bugType = 'golden';
     bugEl.textContent = '🌟';
     bugEl.classList.add('golden-bug');
-    duration = 700; // ¡Solo dura 0.5 segundos!
+    duration = 500; // ¡Solo dura 0.5 segundos!
 
   } else if (chance < 0.30) {
     // 20% de probabilidad: Araña Trampa
@@ -116,5 +117,19 @@ function endGame() {
 }
 
 // Escuchadores de eventos
-startBtn.addEventListener('click', startGame); //Asocia el evento click del botón de inicio con la función startGame
-bugEl.addEventListener('click', catchBug);   //Asocia el evento click del botón del bug con la función catchBug. Esto evita tener que escribir atributos onclick en el HTML
+startBtn.addEventListener('click', startGame);
+bugEl.addEventListener('click', catchBug);
+
+// BONUS: Escuchador de teclado para el modo oscuro con la tecla 'D'
+document.addEventListener('keydown', (event) => {
+  if (event.key.toLowerCase() === 'd') {
+    document.body.classList.toggle('dark-mode');
+
+    // Cambia dinámicamente el mensaje según el estado activo
+    if (document.body.classList.contains('dark-mode')) {
+      themeNotice.textContent = "🌙 Modo Oscuro ACTIVADO (Pulsa 'D' para desactivar)";
+    } else {
+      themeNotice.textContent = "💡 Truco: Pulsa la tecla 'D' para activar el modo oscuro";
+    }
+  }
+});
